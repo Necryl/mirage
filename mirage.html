@@ -4,6 +4,164 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mirage</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      html {
+        height: 100%;
+        width: 100%;
+      }
+      body {
+        display: grid;
+        grid-template-rows: auto 1.5rem 1fr;
+        position: relative;
+        height: 100%;
+      }
+      header,
+      main > * {
+        padding-left: 1em;
+        padding-right: 1em;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 1em;
+        padding-bottom: 1em;
+      }
+      header > button {
+        font-size: 1rem;
+      }
+      main {
+        display: grid;
+      }
+      #about {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        display: grid;
+        place-content: center;
+        padding: 1em;
+      }
+      #about-wrapper {
+        max-width: 400px;
+        max-height: 400px;
+        background-color: black;
+        color: white;
+        padding: 2em;
+        border-radius: 0.4em;
+        font-size: 1.2rem;
+        line-height: 1.7rem;
+        display: grid;
+        gap: 2rem;
+        overflow-y: scroll;
+      }
+      #about-wrapper ul {
+        list-style: none;
+        padding: 0%;
+        display: grid;
+        gap: 0.5rem;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      #status-bar {
+        background-color: lightgray;
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <header>
+      <h1>Mirage</h1>
+      <button>About</button>
+    </header>
+    <main>
+      <div id="about" hidden>
+        <div id="about-wrapper">
+          <p>
+            Mirage is a nifty little tool for quickly and easily sharing files
+            and text between computers. It is serverless, runs completely on
+            your computer, and only connects to other Mirage users. It's top
+            objective is to enable easy, quick and simple file and text sharing,
+            not security. So keep that in mind.
+          </p>
+          <ul>
+            <li>
+              Created by
+              <a href="https://github.com/Necryl" target="_blank">Necryl</a>
+            </li>
+            <li>License: <a href="" target="_blank">MIT</a></li>
+            <li>
+              <a href="https://github.com/Necryl/mirage" target="_blank"
+                >Source Code on Github</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div id="status-bar">Wanderer: 1234 | Oasis: 3245 | Status: Online</div>
+      <div id="discover">Discover</div>
+      <div id="chat-wrapper" hidden>
+        The Chat
+        <div id="chat">
+          <div id="history"></div>
+          <form id="inputBar">
+            <label for=""><input type="file" class="fileInput" /></label>
+            <textarea></textarea>
+            <button type="submit">Send</button>
+          </form>
+        </div>
+        <div id="drop">
+          <label
+            >Upload files, just drop it in like its hot!
+            <input type="file" class="fileInput"
+          /></label>
+        </div>
+      </div>
+    </main>
+    <script>
+      (() => {
+        const doc = {
+          header: {
+            about: { elem: document.querySelector("header button") },
+          },
+          about: {
+            elem: document.querySelector("#about"),
+            wrapper: {
+              elem: document.querySelector("#about-wrapper"),
+            },
+          },
+          discover: { elem: document.querySelector("#discover") },
+          chatWrapper: { elem: document.querySelector("#chat-wrapper") },
+        };
+
+        const status = {
+          about: false,
+          page: "discover",
+        };
+
+        function toggleAbout() {
+          status.about = !status.about;
+          doc.about.elem.hidden = !status.about;
+        }
+
+        function togglePage() {
+          const currentPage = status.page;
+          status.page = currentPage === "discover" ? "chat" : "discover";
+          doc.discover.elem.hidden = status.page !== "discover";
+          doc.chatWrapper.elem.hidden = status.page !== "chat";
+        }
+        // Event listeners
+        doc.about.wrapper.elem.addEventListener("click", (e) =>
+          e.stopPropagation()
+        );
+        doc.header.about.elem.addEventListener("click", toggleAbout);
+        doc.about.elem.addEventListener("click", toggleAbout);
+      })();
+    </script>
+  </body>
 </html>
